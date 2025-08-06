@@ -8,7 +8,7 @@ import OfferApiService from './services/offer-api-service.js';
 import PointsModel from './model/points-model';
 import FilterModel from './model/filter-model';
 import OfferModel from './model/offers-model';
-import DestinationModel from './model//destinations-model';
+import DestinationModel from './model/destinations-model';
 
 import TripPresenter from './presenter/trip-presenter';
 import FilterPresenter from './presenter/filter-presenter';
@@ -55,7 +55,7 @@ const newPointButtonComponent = new NewPointButtonView({
 });
 
 function handleNewPointFormClose() {
-  newPointButtonComponent.element.disabled = false;
+  newPointButtonComponent.element.disabled = !newPointButtonComponent.element.disabled;
 }
 
 function handleNewPointButtonClick() {
@@ -63,10 +63,19 @@ function handleNewPointButtonClick() {
   newPointButtonComponent.element.disabled = true;
 }
 
-filterPresenter.init();
-tripPresenter.init();
-offerModel.init();
-destinationModel.init();
-pointsModel.init().finally(() => {
-  render(newPointButtonComponent, tripMainContainer);
-});
+const init = async () => {
+  filterPresenter.init();
+  tripPresenter.init();
+
+  try {
+    await offerModel.init();
+    await destinationModel.init();
+    await pointsModel.init();  
+    render(newPointButtonComponent, tripMainContainer);
+  } catch (error) {
+    console.log(error)
+    tripPresenter.handleLoadingError();
+  }
+}
+
+init();

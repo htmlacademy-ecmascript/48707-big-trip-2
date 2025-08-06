@@ -4,7 +4,6 @@ import { humanizePointDate } from '../utils/point';
 function createTaskTemplate(point) {
   const { type, destination, offers, timeStart, timeEnd, favorite, cost } =
     point;
-    // console.log(point)
 
   function offersToString(items) {
     return items
@@ -30,12 +29,13 @@ function createTaskTemplate(point) {
   const h = Math.floor((duration - d * 60 ** 2 * 24) / 60 ** 2);
   const m = Math.floor((duration - d * 60 ** 2 * 24 - h * 60 ** 2) / 60);
   if (d > 0) {
-    duration = `${d}D ${h}H ${m}M`;
+    duration = `${d < 10 ? `0${d}` : d}D ${h < 10 ? `0${h}` : h}H ${m < 10 ? `0${m}` : m}M`;
   } else if (h > 0) {
-    duration = `${h}H  ${m}M`;
+    duration = `${h < 10 ? `0${h}` : h}H ${m < 10 ? `0${m}` : m}M`;
   } else {
-    duration = `${m}M`;
+    duration = `${m < 10 ? `0${m}` : m}M`;
   }
+
   const favoriteClassName = favorite ? 'event__favorite-btn--active' : '';
 
   return `<li class='trip-events__item'><div class='event'>
@@ -43,7 +43,7 @@ function createTaskTemplate(point) {
             <div class='event__type'>
               <img class='event__type-icon' width='42' height='42' src='img/icons/${type.toLowerCase()}.png' alt='Event type icon'>
             </div>
-            <h3 class='event__title'>${type} ${destination ? destination.name : ''}</h3>
+            <h3 class='event__title'>${type} ${destination ? destination.name : 'Empty destination'}</h3>
             <div class='event__schedule'>
               <p class='event__time'>
                 <time class='event__start-time' datetime='${dateTimeStart}'>${TimeStart}</time>

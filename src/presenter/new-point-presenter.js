@@ -35,7 +35,7 @@ export default class NewPointPresenter {
       onFormSubmit: this.#handleFormSubmit,
       onDeleteClick: this.#handleDeleteClick,
       offers: this.#offers,
-      destinations: this.#destinations,
+      destinations: this.#destinations
     });
 
     render(
@@ -53,7 +53,6 @@ export default class NewPointPresenter {
     }
 
     this.#handleDestroy();
-
     remove(this.#pointEditComponent);
     this.#pointEditComponent = null;
 
@@ -81,7 +80,6 @@ export default class NewPointPresenter {
 
   #handleFormSubmit = (point) => {
     this.#handleDataChange(UserAction.ADD_POINT, UpdateType.MINOR, point);
-    this.destroy();
   };
 
   #handleDeleteClick = () => {

@@ -17,8 +17,9 @@ export default class OfferModel extends Observable {
   async init() {
     try {
       this.#offers = await this.#offerApiService.offers;
+
     } catch (err) {
-      this.#offers = [];
+      throw new Error('Failed to load latest route information (offers)');
     }
 
     this._notify(UpdateType.INIT);
